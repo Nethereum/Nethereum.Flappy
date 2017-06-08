@@ -1,9 +1,10 @@
+pragma solidity ^0.4.10
+
 contract PlayerScore {
     
     uint maxTopScores = 5;
     address owner;
-    address _add1;
-    address _add2;
+
     struct TopScore{
         address addr;
         int score;
