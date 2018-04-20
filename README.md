@@ -236,5 +236,7 @@ private static extern string SendTransaction(string to, string data);
 ```
 
 
-### Compiling to Webgl
-When compiling to Webgl, you need to ensure that dlls are not stripped when running IL2CPP. An example of the link.xml file can be found in the flappy source code. You may find this issue if you encounter the error “No parameterless constructor defined for Nethereum.Unity.RpcModel.RpcParametersJsonConverter”.
+### Compiling to Webgl and IOS
+When compiling to Webgl or IOS, you need to ensure that dlls are not stripped when running IL2CPP. An example of the link.xml file can be found in the flappy source code. You may find this issue if you encounter the error “No parameterless constructor defined for Nethereum.Unity.RpcModel.RpcParametersJsonConverter”.
+
+**NOTE** The library uses the custom https://github.com/SaladLab/Json.Net.Unity3D Json.Net library, this is included.
