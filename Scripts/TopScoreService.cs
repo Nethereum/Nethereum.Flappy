@@ -16,37 +16,45 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TopScoreService : MonoBehaviour {
-    //This is the Text that displays the user top score
+    //This is the Unity3d Text Element that displays the user top score
     public Text topScoreText;
+    // This is the Unity3d Test Element that displays the userAddress
     public Text userAddress;
+    // This is the Unity3d Test Element that displays the top scores
     public Text topScoresAllTimeText;
 
+    // This is the address of the "game owner", mainly who deployed the top score contract.
     private string _addressOwner = "0x12890d2cce102216644c59daE5baed380d84830c";
+    
     private string _userAddress; // = 
     private byte[] _key;
+    
     //This is the private key used for deployment, this private key belongs to 0x12890d2cce102216644c59daE5baed380d84830c
     //which is the TopScore service ownner. The game signs the top score request so nobody can submit the scores to the public smart contract without using the game.
     //in a real scenario the private key should be hidden / obfuscated.
     private string _privateKey = "0xb5b1870957d373ef0eeffecc6e4812c0fd08f554b37b233526acc331bf1544f7";
-    //Url to Ethereum public client (Todo support https for Infura)
+    //Url to Ethereum public client
     private string _url = "https://rinkeby.infura.io";
     //Service to generate, encode and decode CallInput and TransactionInpput
     //This includes the contract address, abi,, etc, similar to a generic Nethereum services
     private ScoreContractService _scoreContractService;
 
+    //The game sample is deployed using WebGl (could be deployed to any other device), in this scenario to get the user account and submit transactions
+    // we use metamask. But when we are testing locally we use our custom private key and account.
+    // please check https://github.com/Nethereum/Nethereum.Flappy/blob/master/web3Plugin.jslib for the javascript interop.
 #if !UNITY_EDITOR
     public bool ExternalProvider = true;
     [DllImport ("__Internal")]
     private static extern string GetAccount ();
     [DllImport ("__Internal")]
     private static extern string SendTransaction (string to, string data);
-
 #else
     public bool ExternalProvider = false;
     private static string GetAccount () { return null; }
     private static string SendTransaction (string to, string data) { return null; }
 #endif
 
+    //Simple flag to avoid submitting more than once.
     private bool submitting = false;
 
     void Start () {
@@ -61,7 +69,9 @@ public class TopScoreService : MonoBehaviour {
 
     public IEnumerator GetTopScores () {
         var wait = 0;
+        // Continous loop
         while (true) {
+            // Avoid constantly check for total top scores
             yield return new WaitForSeconds (wait);
             wait = 20;
 
