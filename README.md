@@ -184,7 +184,7 @@ yield return transactionSignedRequest.SignAndSendTransaction(transactionInput);
 ### WebGL and Metamask
 Decrypting using WebGL / JavaScript the account file is extremely slow, so when deploying a game to the browser, as per the Unicorn Flappy sample, it makes more sense to delegate the signing to Metamask.
 
-To achieve this you can create your own external library to interact with the injected web3 library in the browser. For more information on External libraries check the Unity documentation
+To achieve this you can create your own external library to interact with the injected web3 library in the browser. For more information on External libraries check the Unity documentation https://docs.unity3d.com/Manual/webgl-interactingwithbrowserscripting.html
 
 ```csharp
 [DllImport("__Internal")]
@@ -232,6 +232,99 @@ private static extern string SendTransaction(string to, string data);
                 submitting = false;
             }
         }
+
+```
+
+### Javascript Interop
+The Javascript interop it is achieved using the JsLib (as per Unity3d docs https://docs.unity3d.com/Manual/webgl-interactingwithbrowserscripting.html). This is an example of usage:
+
+```javascript
+//This file allows you to interop with Web3js / Metamask include it in your assets folder
+
+mergeInto(LibraryManager.library, {
+  GetAccount: function () {
+    var account = '';
+    if (typeof web3 !== 'undefined') {
+        account = web3.eth.accounts[0];
+        if(typeof account === 'undefined'){
+            account = '';
+        }
+    }
+    var buffer = _malloc(lengthBytesUTF8(account) + 1);
+    stringToUTF8(account, buffer, account.length + 1);
+    return buffer;
+  },
+
+  SendTransaction: function (to, data) {
+    var tostr = Pointer_stringify(to);
+    var from = web3.eth.accounts[0];
+    var datastr = Pointer_stringify(data);
+    web3.eth.sendTransaction({from: from, to: tostr, data: datastr} , function(error, hash){  
+        if(error){
+            console.log(error);
+        }
+        else {
+            console.log(hash);
+        }
+    }    
+    );
+  },
+});
+
+```
+
+And the source code of the html file which uses the usual web3js and metamask checks
+
+```html
+ <script>
+        var gameInstance = UnityLoader.instantiate("gameContainer", "Build/webglmeta3.json", {onProgress: UnityProgress});
+        window.addEventListener('load', function() {
+        // Checking if Web3 has been injected by the browser (Mist/MetaMask)
+        if (typeof web3 !== 'undefined') {
+          web3.version.getNetwork((err, netId) => {
+              if(netId != 4){
+                document.getElementById("metamaskWarning").innerText = 'Please connect to Rinkeby to view and submit your top scores';
+                web3 = undefined;  
+              }else{
+                window.web3 = new Web3(web3.currentProvider);
+                if(typeof(window.web3.eth.accounts[0]) == 'undefined'){
+                  document.getElementById("metamaskWarning").innerText = 'Please unlock Metamask to view and submit your top scores';       
+                }else{
+                  document.getElementById("metamaskWarning").innerText = '';       
+                }
+              }
+            });
+        } else {
+          document.getElementById("metamaskWarning").innerText = 'Please install Metamask and connect to Rinkeby to view and submit your top scores';
+        }
+    });
+    </script>
+  </head>
+  <body>
+    <div class="webgl-content">
+      <div id="gameContainer" style="width: 960px; height: 600px"></div>
+      <div class="footer">
+        <div class="webgl-logo"></div> 
+        <div class="fullscreen" onclick="gameInstance.SetFullscreen(1)"></div>
+        <div class="title">Ethereum Flappy Unicorn PoC using Nethereum, Metamask and Infura</div>
+      </div>
+       <div class="footer">
+        <h2 id="metamaskWarning" style="color:red">Please install Metamask and connect to Rinkeby to submit your top score</h2>
+      </div>
+      <div class="footer">
+        <div class="title">Can you beat your top score and the top 5? Your Top score will be stored in chain once the game is finished</div>
+      </div>
+      <div class="footer">
+        <div class="title">Metamask required with an account in Rinkeby</div>
+      </div>
+      <div class="footer">
+        <div class="title">Contract address: 0x32eb97b8ad202b072fd9066c03878892426320ed</div>
+      </div>
+      <div class="footer">
+        <div class="title"><a href="https://github.com/Nethereum/Nethereum.Flappy/blob/master/playerscore.sol" target="_blank">Contract source</a></div>
+      </div>
+      
+    </div>
 
 ```
 
