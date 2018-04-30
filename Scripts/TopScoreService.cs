@@ -24,8 +24,10 @@ public class TopScoreService : MonoBehaviour {
     private string _addressOwner = "0x12890d2cce102216644c59daE5baed380d84830c";
     private string _userAddress; // = 
     private byte[] _key;
-    //Partial private key to sign the transactions
-    private string _privateKey = "fa002a6a5bc0f42cc9a8806ab109bf5cd2f8bb6c54d4";
+    //This is the private key used for deployment, this private key belongs to 0x12890d2cce102216644c59daE5baed380d84830c
+    //which is the TopScore service ownner. The game signs the top score request so nobody can submit the scores to the public smart contract without using the game.
+    //in a real scenario the private key should be hidden / obfuscated.
+    private string _privateKey = "0xb5b1870957d373ef0eeffecc6e4812c0fd08f554b37b233526acc331bf1544f7";
     //Url to Ethereum public client (Todo support https for Infura)
     private string _url = "https://rinkeby.infura.io";
     //Service to generate, encode and decode CallInput and TransactionInpput
