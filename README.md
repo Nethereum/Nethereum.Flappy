@@ -2,7 +2,7 @@
 
 This is the csharp source code for the Flappy Bird example on how to integrate Unity3d and Ethereum. It is assumed some familiarity with Nethereum as the Unity3d support extends the current implementation.
 
-If you are not familiar with Unity3d this sample is based on the Unity3d tutorial on how to build a flappy bird style game: https://unity3d.com/learn/live-training/session/making-flappy-bird-style-game
+If you are not familiar with Unity3d this sample is based on the Unity3d tutorial on how to build a flappy bird style game: https://unity3d.com/learn/live-training/session/making-flappy-bird-style-game.
 
 ## Working with Unity3d
 
