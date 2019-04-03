@@ -34,7 +34,8 @@ public class TopScoreService : MonoBehaviour {
     //in a real scenario the private key should be hidden / obfuscated.
     private string _privateKey = "0xb5b1870957d373ef0eeffecc6e4812c0fd08f554b37b233526acc331bf1544f7";
     //Url to Ethereum public client
-    private string _url = "https://rinkeby.infura.io";
+    // Note: in this sample, a special INFURA API key is used: `7238211010344719ad14a89db874158c`. If you wish to use this sample in your own project you’ll need to [sign up on INFURA](https: //infura.io/register) and use your own key.
+      private string _url = "https://rinkeby.infura.io/v3/7238211010344719ad14a89db874158c";
     //Service to generate, encode and decode CallInput and TransactionInpput
     //This includes the contract address, abi,, etc, similar to a generic Nethereum services
     private ScoreContractService _scoreContractService;
