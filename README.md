@@ -30,8 +30,10 @@ All this UnityRPC requests, internally wrap the core RPC requests, decoupling th
 
 So how does this work? Let’s start with simple RPC calls, like the one to retrieve the current block number on the Ethereum Flappy Unicorn game.
 
+Note: in this sample, a special INFURA API key is used: `7238211010344719ad14a89db874158c`. If you wish to use this sample in your own project you’ll need to [sign up on INFURA](https://infura.io/register) and use your own key.
+
 ```csharp
-var blockNumberRequest = new EthBlockNumberUnityRequest("https://rinkeby.infura.io");
+var blockNumberRequest = new EthBlockNumberUnityRequest("https://rinkeby.infura.io/v3/7238211010344719ad14a89db874158c");
 ```
 
 Normally we would use web3 to manage all the RPC requests, but for Unity3d we use a specific request per each type of RPC call, including information about the RPC client. 
@@ -79,7 +81,7 @@ public class BlockNumber : MonoBehaviour {
         while (true) {
             yield return new WaitForSeconds (wait);
             wait = 10;
-            var blockNumberRequest = new EthBlockNumberUnityRequest ("https://rinkeby.infura.io");
+            var blockNumberRequest = new EthBlockNumberUnityRequest ("https://rinkeby.infura.io/v3/7238211010344719ad14a89db874158c");
             yield return blockNumberRequest.SendRequest ();
             if (blockNumberRequest.Exception == null) {
                 var blockNumber = blockNumberRequest.Result.Value;
@@ -98,7 +100,7 @@ Contract calls are made in a similar way to any other Unity RPC call, but they n
 For example to retrieve the user top score we will create first a EthCallUnityRequest, responsible to make an eth_call rpc request.
 
 ```csharp
-var userTopScoreRequest = new EthCallUnityRequest("https://rinkeby.infura.io");
+var userTopScoreRequest = new EthCallUnityRequest("https://rinkeby.infura.io/v3/7238211010344719ad14a89db874158c");
 ```
 Using the contract ABI and contract address we can then create a new contract and retrieve the function.
 

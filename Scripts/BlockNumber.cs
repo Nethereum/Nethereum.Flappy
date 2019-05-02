@@ -26,7 +26,7 @@ public class BlockNumber : MonoBehaviour {
         while (true) {
             yield return new WaitForSeconds (wait);
             wait = 10;
-            var blockNumberRequest = new EthBlockNumberUnityRequest ("https://rinkeby.infura.io");
+            var blockNumberRequest = new EthBlockNumberUnityRequest ("https://rinkeby.infura.io/v3/7238211010344719ad14a89db874158c");
             yield return blockNumberRequest.SendRequest ();
             if (blockNumberRequest.Exception == null) {
                 var blockNumber = blockNumberRequest.Result.Value;
