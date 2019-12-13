@@ -1,5 +1,3 @@
-//This file allows you to interop with Web3js / Metamask include it in your assets folder
-
 mergeInto(LibraryManager.library, {
   GetAccount: function () {
     var account = '';
@@ -18,14 +16,23 @@ mergeInto(LibraryManager.library, {
     var tostr = Pointer_stringify(to);
     var from = web3.eth.accounts[0];
     var datastr = Pointer_stringify(data);
-    web3.eth.sendTransaction({from: from, to: tostr, data: datastr} , function(error, hash){  
-        if(error){
-            console.log(error);
-        }
-        else {
-            console.log(hash);
-        }
-    }    
-    );
+	
+	var params = [{
+		"from": from,
+		"to": tostr,
+		"data": datastr
+	}];
+	var message = {
+	  method: 'eth_sendTransaction',
+	  params: params,
+	  from: from
+	};
+   
+	new Promise(function (resolve, reject) {
+            ethereum.send(message, function (error, result) {
+                console.log(result);
+                resolve(JSON.stringify(result));
+         	});
+	 }).then(function(response){console.log(response);});
   },
 });
