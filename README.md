@@ -6,6 +6,8 @@ If you are not familiar with Unity3d, this sample is based on the Unity3d tutori
 
 And full game here: https://assetstore.unity.com/packages/templates/flappy-bird-style-example-game-80330
 
+Note: For a simpler get started with Unity and Nethereum integration check also this tutorial. https://github.com/Nethereum/Unity3dSimpleSampleNet461
+
 ## Working with Unity3d
 
 To enable cross platform compatibility and the threading mechanism using coroutines for Unity3d, Nethereum uses a new type of RPC Client, the UnityRpcClient.
