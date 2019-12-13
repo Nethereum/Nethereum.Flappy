@@ -267,15 +267,24 @@ mergeInto(LibraryManager.library, {
     var tostr = Pointer_stringify(to);
     var from = web3.eth.accounts[0];
     var datastr = Pointer_stringify(data);
-    web3.eth.sendTransaction({from: from, to: tostr, data: datastr} , function(error, hash){  
-        if(error){
-            console.log(error);
-        }
-        else {
-            console.log(hash);
-        }
-    }    
-    );
+	
+	var params = [{
+		"from": from,
+		"to": tostr,
+		"data": datastr
+	}];
+	var message = {
+	  method: 'eth_sendTransaction',
+	  params: params,
+	  from: from
+	};
+   
+	new Promise(function (resolve, reject) {
+            ethereum.send(message, function (error, result) {
+                console.log(result);
+                resolve(JSON.stringify(result));
+         	});
+	 }).then(function(response){console.log(response);});
   },
 });
 
@@ -284,55 +293,66 @@ mergeInto(LibraryManager.library, {
 And the source code of the html file which uses the usual web3js and metamask checks
 
 ```html
- <script>
-        var gameInstance = UnityLoader.instantiate("gameContainer", "Build/webglmeta3.json", {onProgress: UnityProgress});
+<!DOCTYPE html>
+    <script>
+        var gameInstance = UnityLoader.instantiate("gameContainer", "Build/webglmeta4.json", {onProgress: UnityProgress});
         window.addEventListener('load', function() {
-        // Checking if Web3 has been injected by the browser (Mist/MetaMask)
-        if (typeof web3 !== 'undefined') {
+        // Checking metamask
+        checkMetamask();
+    });
+	
+	function checkMetamask(){
+		if (typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask && window.ethereum.isConnected()) {
+		  web3.setProvider(window.ethereum);
           web3.version.getNetwork((err, netId) => {
               if(netId != 4){
                 document.getElementById("metamaskWarning").innerText = 'Please connect to Rinkeby to view and submit your top scores';
+				document.getElementById("btnConnectToMetamask").style.visibility = "visible";
                 web3 = undefined;  
               }else{
                 window.web3 = new Web3(web3.currentProvider);
                 if(typeof(window.web3.eth.accounts[0]) == 'undefined'){
                   document.getElementById("metamaskWarning").innerText = 'Please unlock Metamask to view and submit your top scores';       
+				  document.getElementById("btnConnectToMetamask").style.visibility = "visible";
                 }else{
-                  document.getElementById("metamaskWarning").innerText = '';       
+                  document.getElementById("metamaskWarning").innerText = ''; 
+				  document.getElementById("btnConnectToMetamask").style.visibility = "hidden";
                 }
               }
             });
         } else {
-          document.getElementById("metamaskWarning").innerText = 'Please install Metamask and connect to Rinkeby to view and submit your top scores';
+			document.getElementById("metamaskWarning").innerText = 'Please install Metamask and connect to Rinkeby to view and submit your top scores';
         }
-    });
+	}
+	async function connectToMetamask(){
+		try {
+			await window.ethereum.enable();
+			checkMetamask();
+		} catch (error) {
+		  // Handle error. Likely the user rejected the login
+		  console.error(error)
+		}
+	}
     </script>
   </head>
   <body>
+  <div class="container">
+    <div class="row">
     <div class="webgl-content">
       <div id="gameContainer" style="width: 960px; height: 600px"></div>
-      <div class="footer">
-        <div class="webgl-logo"></div> 
-        <div class="fullscreen" onclick="gameInstance.SetFullscreen(1)"></div>
-        <div class="title">Ethereum Flappy Unicorn PoC using Nethereum, Metamask and Infura</div>
-      </div>
-       <div class="footer">
-        <h2 id="metamaskWarning" style="color:red">Please install Metamask and connect to Rinkeby to submit your top score</h2>
-      </div>
-      <div class="footer">
-        <div class="title">Can you beat your top score and the top 5? Your Top score will be stored in chain once the game is finished</div>
-      </div>
-      <div class="footer">
-        <div class="title">Metamask required with an account in Rinkeby</div>
-      </div>
-      <div class="footer">
-        <div class="title">Contract address: 0x32eb97b8ad202b072fd9066c03878892426320ed</div>
-      </div>
-      <div class="footer">
-        <div class="title"><a href="https://github.com/Nethereum/Nethereum.Flappy/blob/master/playerscore.sol" target="_blank">Contract source</a></div>
-      </div>
-      
-    </div>
+	   
+	   <section class="jumbotron text-center">
+        <div class="container">
+          <h1 class="jumbotron-heading">Ethereum Flappy Unicorn PoC using Nethereum, Metamask and Infura</h1>
+          <p class="lead text-muted">Can you beat your top score and the top 5? Your top score will be stored in an ethereum blockchain smart contract once the game is finished</p>
+		  <p id="metamaskWarning" class="lead" style="color:red">Please install Metamask and connect to Rinkeby to submit your top score</p>
+          <p>
+            <a href="#" id="btnConnectToMetamask"  onClick="connectToMetamask()" class="btn btn-secondary btn-lg btn-block">Connect to Metamask</a>
+          </p>
+        </div>
+      </section>
+
+
 
 ```
 
