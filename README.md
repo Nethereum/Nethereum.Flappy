@@ -6,7 +6,7 @@ If you are not familiar with Unity3d, this sample is based on the Unity3d tutori
 
 And full game here: https://assetstore.unity.com/packages/templates/flappy-bird-style-example-game-80330
 
-**Note**: For uptodate started templates using Nethereum, use the following:
+**Note**: For up to date how to get started templates using Nethereum, use the following:
 
 Unity3dSimpleSampleNet461: A solution for all platforms using the latest version of Nethereum and integrating Unity and Nethereum check also this tutorial. https://github.com/Nethereum/Unity3dSimpleSampleNet461
 
