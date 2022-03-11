@@ -6,7 +6,11 @@ If you are not familiar with Unity3d, this sample is based on the Unity3d tutori
 
 And full game here: https://assetstore.unity.com/packages/templates/flappy-bird-style-example-game-80330
 
-Note: For a simpler get started example and upto date (latest version of Nethereum) of integrating Unity and Nethereum check also this tutorial. https://github.com/Nethereum/Unity3dSimpleSampleNet461
+**Note**: For uptodate started templates using Nethereum, use the following:
+
+Unity3dSimpleSampleNet461: A solution for all platforms using the latest version of Nethereum and integrating Unity and Nethereum check also this tutorial. https://github.com/Nethereum/Unity3dSimpleSampleNet461
+
+Nethereum Unity Webgl: A solution example on how to integrate with Nethereum/Metamask and NFTs https://github.com/Nethereum/Nethereum.Unity.Webgl
 
 ## Working with Unity3d
 
