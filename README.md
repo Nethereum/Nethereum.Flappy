@@ -194,6 +194,9 @@ Decrypting using WebGL / JavaScript the account file is extremely slow, so when 
 
 To achieve this you can create your own external library to interact with the injected web3 library in the browser. For more information on External libraries check the Unity documentation https://docs.unity3d.com/Manual/webgl-interactingwithbrowserscripting.html
 
+** NOTE **
+** Check for an updated version on metamask integration https://github.com/Nethereum/Nethereum.Unity.Webgl **
+
 ```csharp
 [DllImport("__Internal")]
 private static extern string SendTransaction(string to, string data);
@@ -244,7 +247,10 @@ private static extern string SendTransaction(string to, string data);
 ```
 
 ### Javascript Interop
-The Javascript interop it is achieved using the JsLib (as per Unity3d docs https://docs.unity3d.com/Manual/webgl-interactingwithbrowserscripting.html). This is an example of usage:
+The Javascript interop it is achieved using the JsLib (as per Unity3d docs https://docs.unity3d.com/Manual/webgl-interactingwithbrowserscripting.html). This is an example of usage.
+
+** NOTE **
+** Check for an updated version on usage https://github.com/Nethereum/Nethereum.Unity.Webgl **
 
 ```javascript
 //This file allows you to interop with Web3js / Metamask include it in your assets folder
